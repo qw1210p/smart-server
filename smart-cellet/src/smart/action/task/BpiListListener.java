@@ -79,7 +79,7 @@ public class BpiListListener extends AbstractListener {
 				String content = new String(bytes, Charset.forName("UTF-8"));
 				try {
 					jo = new JSONObject(content);
-					System.out.println("=======所有的流程工单列表为：======="+jo.toString());
+					System.out.println("=incident process list is:"+jo.toString());
 					// 设置参数
 					params.addProperty(new ObjectProperty("data", jo));
 

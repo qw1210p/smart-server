@@ -49,7 +49,7 @@ public class UserListListener extends AbstractListener{
 			e2.printStackTrace();
 		}
 		
-	
+		System.out.println("获取用户URL:" + url.toString());
 			// 创建请求
 		Request request = this.getHttpClient().newRequest(url.toString());
 		request.method(HttpMethod.GET);
@@ -77,7 +77,7 @@ public class UserListListener extends AbstractListener{
 				String content = new String(bytes, Charset.forName("UTF-8"));
 				try {
 					jo = new JSONObject(content);
-					System.out.println("响应工单保存数据的返回值为：:" + jo);
+					System.out.println("用户返回值为：:" + jo);
 
 					// 设置参数
 					params.addProperty(new ObjectProperty("data", jo));
