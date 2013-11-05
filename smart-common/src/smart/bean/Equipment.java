@@ -11,7 +11,7 @@ public class Equipment extends AbstractEntity {
 
 	private String typeName;
 	private String vendor;
-	private String typeCode;
+	private long typeCode;
 	private String model;
 	private String typePath;
 	private String alias;
@@ -20,6 +20,7 @@ public class Equipment extends AbstractEntity {
 	private int mgrStatus;
 	private String moName;
 	private String moType;
+	private String moSort;
 	
 	public Equipment(long id) {
 		super(id);
@@ -41,12 +42,20 @@ public class Equipment extends AbstractEntity {
 		this.vendor = vendor;
 	}
 
-	public String getTypeCode() {
+	public long getTypeCode() {
 		return typeCode;
 	}
 
-	public void setTypeCode(String typeCode) {
+	public void setTypeCode(long typeCode) {
 		this.typeCode = typeCode;
+	}
+
+	public String getMoSort() {
+		return moSort;
+	}
+
+	public void setMoSort(String moSort) {
+		this.moSort = moSort;
 	}
 
 	public String getModel() {
