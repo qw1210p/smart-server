@@ -67,6 +67,11 @@ public final class API {
 	public final static String COMMONUSERLIST = "userm/getUserList.html?username=admin";
 	public final static String BPILIST = "incidentm/getBpiList.html?username=admin";
 	
+	public final static String IMPACTLIST = "incidentm/getImpactListForBp.html?username=admin";
+	public final static String URGENTLIST = "incidentm/getUrgentListForBp.html?username=admin";
+	public final static String SERVICELEVELLIST = "incidentm/getServiceLevelByBpId.html?username=admin";
+	public final static String CLOSECODELIST = "incidentm/getBpCloseCodesByBp.html?username=admin";
+	
 
 	// 资产
 	public final static String CILIST = "sacmm/listEquipments.html?username=admin";

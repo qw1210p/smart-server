@@ -61,12 +61,16 @@ import smart.action.resource.MemoryUsageListener;
 import smart.action.resource.NetEquipmentListener;
 import smart.action.resource.PingListener;
 import smart.action.resource.SendSnapshotListener;
+import smart.action.task.BpCloseCodeListListener;
 import smart.action.task.BpiListListener;
 import smart.action.task.IncidentCategoryListListener;
 import smart.action.task.IncidentDetailListener;
 import smart.action.task.IncidentListListener;
 import smart.action.task.IncidentProcessListener;
 import smart.action.task.OperationListListener;
+import smart.action.task.SlaImpactListListener;
+import smart.action.task.SlaServiceLevelListListener;
+import smart.action.task.SlaUrgentListListener;
 import smart.action.task.UserListListener;
 import smart.action.time.CurrentTimeListener;
 import smart.mast.Root;
@@ -480,6 +484,26 @@ public class SmartCellet extends Cellet {
 		UserListListener userList = new UserListListener(this);
 		userList.setHttpClient(this.httpClient);
 		dispatcher.addListener(Action.COMMONUSERLIST, userList);
+	
+		//影响程度
+		SlaImpactListListener impactList = new SlaImpactListListener(this);
+		impactList.setHttpClient(this.httpClient);
+		dispatcher.addListener(Action.IMPACTLIST, impactList);
+		
+		//紧急程度
+		SlaUrgentListListener urgentList = new SlaUrgentListListener(this);
+		urgentList.setHttpClient(this.httpClient);
+		dispatcher.addListener(Action.URGENTLIST, urgentList);
+		
+		//优先级
+		SlaServiceLevelListListener serviceLevelList = new SlaServiceLevelListListener(this);
+		serviceLevelList.setHttpClient(this.httpClient);
+		dispatcher.addListener(Action.SERVICELEVELLIST, serviceLevelList);
+		
+		//关闭代码
+		BpCloseCodeListListener closeCodeList = new BpCloseCodeListListener(this);
+		impactList.setHttpClient(this.httpClient);
+		dispatcher.addListener(Action.CLOSECODELIST, closeCodeList);
 		
 		/*************** 资产管理 **************/
 		// 获取设备资产列表数据
