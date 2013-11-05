@@ -28,7 +28,6 @@ import smart.api.RequestContentCapsule;
 import smart.api.host.HostConfig;
 import smart.api.host.HostConfigContext;
 import smart.api.host.MonitorSystemHostConfig;
-import smart.core.HostManager;
 import smart.mast.action.Action;
 
 public class CPUUsageListener extends AbstractListener {
@@ -121,10 +120,10 @@ public class CPUUsageListener extends AbstractListener {
 								JSONArray ja1 = jsonData.getJSONArray("data");
 								JSONArray ja2 = new JSONArray();
 
-								long cpuid = jsonData.getLong("mosn");
-								long timestamp = 0;
-								double usedPercent = 0;
-
+//								long cpuid = jsonData.getLong("mosn");
+//								long timestamp = 0;
+//								double usedPercent = 0;
+								
 								for (int j = 0; j < ja1.length(); j++) {
 									JSONArray jsonData1 = ja1.getJSONArray(j);
 									JSONObject jo = new JSONObject();
@@ -144,16 +143,17 @@ public class CPUUsageListener extends AbstractListener {
 													.getTime());
 									ja2.put(jo);
 
-									usedPercent = Double
-											.valueOf((String) jsonData1.get(0));
-
-									timestamp = df.parse(
-											(String) jsonData1.get(1))
-											.getTime();
+//									usedPercent = Double
+//											.valueOf((String) jsonData1.get(0));
+//
+//									timestamp = df.parse(
+//											(String) jsonData1.get(1))
+//											.getTime();
 									
-									HostManager hm=HostManager.getInstance();
-									hm.addCPUPrecsById(cpuid, usedPercent, timestamp);
+//									HostManager hm=HostManager.getInstance();
+//									hm.addCPUPrecsById(cpuid, usedPercent, timestamp);
 
+									System.out.println("CPUPrec___"+ja2);
 								}
 
 								jsonData.remove("data");
@@ -176,7 +176,7 @@ public class CPUUsageListener extends AbstractListener {
 						data.put("errorInfo", "未获取到相关kpi数据");
 					}
 
-					System.out.println("结果：" + data);
+					System.out.println("data：      " + data);
 					// 设置参数
 					params.addProperty(new ObjectProperty("data", data));
 				} catch (JSONException e) {

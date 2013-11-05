@@ -28,7 +28,6 @@ import smart.api.RequestContentCapsule;
 import smart.api.host.HostConfig;
 import smart.api.host.HostConfigContext;
 import smart.api.host.MonitorSystemHostConfig;
-import smart.core.HostManager;
 import smart.mast.action.Action;
 
 public class FileSystemUsageListener extends AbstractListener {
@@ -103,6 +102,7 @@ public class FileSystemUsageListener extends AbstractListener {
 				try {
 					data = new JSONObject(content);
 
+					System.out.println("data----"+data);
 					if ("success".equals(data.get("status"))) {
 
 						if (!"".equals(data.get("dataList"))
@@ -111,12 +111,22 @@ public class FileSystemUsageListener extends AbstractListener {
 							DateFormat df = new SimpleDateFormat(
 									"yyyy-MM-dd HH:mm:ss");
 
+							
+							if(ja.length()>0){
+								System.out.println(ja);
+							}else{
+								System.out.println("data - length"+ja.length());
+							}
+							
 							for (int i = 0; i < ja.length(); i++) {
 								JSONObject jsonData = ja.getJSONObject(i);
 								JSONArray ja1 = jsonData.getJSONArray("data");
 								JSONArray ja2 = new JSONArray();
 
-								long filesysid=jsonData.getLong("mosn");
+								
+								
+								
+//								long filesysid=jsonData.getLong("mosn");
 								
 								for (int j = 0; j < ja1.length(); j++) {
 									JSONArray jsonData1 = ja1.getJSONArray(j);
@@ -137,12 +147,14 @@ public class FileSystemUsageListener extends AbstractListener {
 													.getTime());
 									ja2.put(jo);
 									
-									double usage=Double.valueOf((String) jsonData1.get(0));
-									long timestamp=df.parse((String) jsonData1.get(1))
-											.getTime();
-									
-									HostManager hm=HostManager.getInstance();
-									hm.addFileSystemUsages(filesysid, usage, timestamp);
+//									double usage=Double.valueOf((String) jsonData1.get(0));
+//									long timestamp=df.parse((String) jsonData1.get(1))
+//											.getTime();
+//									
+//									HostManager hm=HostManager.getInstance();
+//									hm.addFileSystemUsages(filesysid, usage, timestamp);
+								
+								System.out.println("filesysusage___"+ja2);
 								}
 
 								jsonData.remove("data");
@@ -165,7 +177,7 @@ public class FileSystemUsageListener extends AbstractListener {
 						data.put("errorInfo", "未获取到相关kpi数据");
 					}
 
-					System.out.println("结果：" + data);
+					System.out.println("data：      " + data);
 					// 设置参数
 					params.addProperty(new ObjectProperty("data", data));
 				} catch (JSONException e) {

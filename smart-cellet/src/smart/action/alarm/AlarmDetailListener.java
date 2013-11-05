@@ -175,14 +175,14 @@ public final class AlarmDetailListener extends AbstractListener {
 						// 响应动作，即向客户端发送ActionDialect
 						// 参数tracker是一次动作的追踪标识，这里可以使用访问标记token
 						Logger.i(this.getClass(), params.toString());
-						this.response(token, Action.ALARMBASEINFO, params);
+						this.response(token, Action.ALARMDETAIL, params);
 					} catch (JSONException e) {
 						e.printStackTrace();
 					} catch (ParseException e) {
 						e.printStackTrace();
 					}
 				} else {
-					this.reportHTTPError(token, Action.ALARMBASEINFO);
+					this.reportHTTPError(token, Action.ALARMDETAIL);
 				}
 				break;
 			default:
@@ -199,7 +199,7 @@ public final class AlarmDetailListener extends AbstractListener {
 				params.addProperty(new ObjectProperty("data", jo));
 
 				// 响应动作，即向客户端发送 ActionDialect
-				this.response(token, Action.ALARMBASEINFO, params);
+				this.response(token, Action.ALARMDETAIL, params);
 				break;
 			}
 		} else {
@@ -210,7 +210,7 @@ public final class AlarmDetailListener extends AbstractListener {
 				e.printStackTrace();
 			}
 			params.addProperty(new ObjectProperty("data", jo));
-			this.response(Action.ALARMBASEINFO, params);
+			this.response(Action.ALARMDETAIL, params);
 		}
 	}
 }

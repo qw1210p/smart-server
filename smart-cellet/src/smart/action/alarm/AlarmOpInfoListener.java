@@ -21,6 +21,9 @@ import org.json.JSONObject;
 import smart.action.AbstractListener;
 import smart.api.API;
 import smart.api.RequestContentCapsule;
+import smart.api.host.HostConfig;
+import smart.api.host.HostConfigContext;
+import smart.api.host.MonitorSystemHostConfig;
 import smart.mast.action.Action;
 
 /**
@@ -43,15 +46,17 @@ public final class AlarmOpInfoListener extends AbstractListener {
 		// 获取请求参数
 		JSONObject json;
 		String token = null;
-		long almId = 0;
-		int currentIndex = 0;
-		int pagesize = 0;
+		String moType = null;
+		String almCause = null;
+		long moId = 0;
+		long userId = 0;
 		try {
 			json = new JSONObject(action.getParamAsString("data"));
 			token = json.getString("token");
-			almId = json.getLong("almId");
-			currentIndex = json.getInt("currentIndex");
-			pagesize = json.getInt("pagesize");
+			moType = json.getString("moType");
+			almCause = json.getString("almCause");
+			moId = json.getLong("moId");
+			userId = json.getLong("userId");
 		} catch (JSONException e1) {
 			e1.printStackTrace();
 		}
@@ -60,7 +65,13 @@ public final class AlarmOpInfoListener extends AbstractListener {
 		if (token != null && !"".equals(token)) {
 
 			// URL
-			StringBuilder url = new StringBuilder(API.ALARMOPINFO);
+			HostConfig config = new MonitorSystemHostConfig();
+			HostConfigContext context = new HostConfigContext(config);
+			StringBuilder url = new StringBuilder(context.getAPIHost())
+					.append("/").append(API.ALARMOPINFO).append("/")
+					.append(moType).append(",").append(almCause)
+					.append(",").append(moId).append("?DMSN=101&userID=")
+					.append(userId).append("&op=get");
 
 			// 创建请求
 			Request request = this.getHttpClient().newRequest(url.toString());
@@ -70,9 +81,10 @@ public final class AlarmOpInfoListener extends AbstractListener {
 			// 填写数据内容
 			DeferredContentProvider dcp = new DeferredContentProvider();
 			RequestContentCapsule capsule = new RequestContentCapsule();
-			capsule.append("almId", almId);
-			capsule.append("currentIndex", currentIndex);
-			capsule.append("pagesize", pagesize);
+			capsule.append("moId", moId);
+			capsule.append("moType", moType);
+			capsule.append("almCause", almCause);
+			capsule.append("userId", userId);
 			capsule.append("token", token);
 			dcp.offer(capsule.toBuffer());
 			dcp.close();

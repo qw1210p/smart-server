@@ -16,8 +16,6 @@ public final class Action {
 	// 服务器连接检测
 	public final static String CONNECTIONCHECK = "connectionCheck";
 
-	public final static String TEST = "show.json";
-
 	public final static String NODEDETECTION = "nodeDetection";
 	// 登录
 	public final static String LOGIN = "login";
@@ -28,7 +26,6 @@ public final class Action {
 	public static final String CURRENTTIME = "requestCurrentTime";
 
 	// 首页关注
-	public static final String ATTENTION = "requestAttention";
 	public static final String CANCELATTENTION = "cancelAttention";
 	public static final String DELETEATTENTION = "deleteAttention";
 	public static final String ADDATTENTION = "addAttention";
@@ -60,6 +57,9 @@ public final class Action {
 	public final static String NETEQUIPMENT = "requestNetEqpt";
 	public final static String DATABASE = "requestDatabase";
 
+	public final static String EQUIPMENTCONFIG="requestEqptConfig";
+	public final static String HOSTCONFIG="requestHostConfig";
+	public final static String NETEQUIPMENTCONFIG="requestNeqtConfig";
 	public final static String CPU = "requestCPU";
 	public final static String MEMORY = "requestMemory";
 	public final static String FILESYSTEM = "requestFileSys";
@@ -80,15 +80,14 @@ public final class Action {
 	// 告警
 	public static final String ALARMLIST = "requestAlarmList";
 	public static final String ALARMDETAIL = "requestAlarmDetail";
-	public static final String ALARMBASEINFO = "requestAlarmBaseInfo";
-	public static final String DEALINFO = "addDealInfo";
 	public static final String ALARMDEAL = "alarmDeal";
+//	public static final String ALARMBASEINFO = "requestAlarmBaseInfo";
+	public static final String ADDALARMOPINFO = "addAlarmOpInfo";
+	public static final String ADDALARMEXPERIENCE = "addAlarmExperience";
+	public static final String ALARMEXPERIENCE = "requestAlarmExperience";
+	public static final String ALARMOPINFO = "requestAlarmOpInfo";
 	public static final String ALARMFORWARD = "alarmForward";
 	public static final String ALARMCOVERAGE = "requestAlarmCoverage";
-
-	public static final String ALARMEXPERIENCE = "requestAlarmExperience";
-
-	public static final String ALARMOPINFO = "requestAlarmOpInfo";
 	public static final String ALARMLIFECYCLE = "requestAlarmLifeCycle";
 	public static final String SUPPRESSEDALARM = "requestSuppressedAlarm";
 	public static final String ALARMDISTRIBUTION = "requestAlarmDistribution";

@@ -32,9 +32,7 @@ import smart.api.RequestContentCapsule;
 import smart.api.host.HostConfig;
 import smart.api.host.HostConfigContext;
 import smart.api.host.MonitorSystemHostConfig;
-import smart.core.AlarmManager;
 import smart.mast.action.Action;
-import smart.util.DButil;
 
 /**
  * 告警列表监听
@@ -182,12 +180,12 @@ public final class AlarmListListener extends AbstractListener {
 									}
 								}
 								jar.put(job);
-								if (DButil.getInstance().getConnection() != null) {
-									boolean b = AlarmManager.getInstance().isExist(job.getLong("almId"));
-									if (!b){
-										AlarmManager.getInstance().signInList(job);
-									}
-								}
+//								if (DButil.getInstance().getConnection() != null) {
+//									boolean b = AlarmManager.getInstance().isExist(job.getLong("almId"));
+//									if (!b){
+//										AlarmManager.getInstance().signInList(job);
+//									}
+//								}
 							}
 						}
 						System.out.println("jsonArray" + jar.length()+": " + jar);

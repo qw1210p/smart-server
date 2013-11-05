@@ -30,6 +30,8 @@ public class EquipmentManager {
 		Equipment e = null;
 		try {
 			e = new Equipment(jo.getLong("moId"));
+			e.setMoSort(jo.getString("moSort"));
+			e.setTypeCode(jo.getLong("typeCode"));
 			e.setTypeName(jo.getString("typeName"));
 			JSONObject json = jo.getJSONObject("base_info");
 			e.setModel(json.getString("model"));
@@ -37,11 +39,10 @@ public class EquipmentManager {
 			e.setAlias(json.getString("alias"));
 			e.setVendor(json.getString("vendor"));
 			e.setMoIp(json.getString("moIp"));
+			e.setMoType(json.getString("moType"));
 			e.setAlmStatus(json.getInt("almStatus"));
-			e.setTypeCode(json.getString("typeCode"));
 			e.setMgrStatus(json.getInt("mgrStatus"));
 			e.setMoName(json.getString("moName"));
-			e.setMoType(jo.getString("moType"));
 		} catch (JSONException e1) {
 			e1.printStackTrace();
 		}

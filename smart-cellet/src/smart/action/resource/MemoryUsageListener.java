@@ -28,8 +28,6 @@ import smart.api.RequestContentCapsule;
 import smart.api.host.HostConfig;
 import smart.api.host.HostConfigContext;
 import smart.api.host.MonitorSystemHostConfig;
-import smart.core.HostManager;
-import smart.core.NetEquipmentManager;
 import smart.mast.action.Action;
 
 public class MemoryUsageListener extends AbstractListener {
@@ -122,8 +120,8 @@ public class MemoryUsageListener extends AbstractListener {
 								JSONArray ja1 = jsonData.getJSONArray("data");
 								JSONArray ja2 = new JSONArray();
 
-								long memid = jsonData.getLong("mosn");
-
+								// long memid = jsonData.getLong("mosn");
+								System.out.println("__+__+__");
 								for (int j = 0; j < ja1.length(); j++) {
 									JSONArray jsonData1 = ja1.getJSONArray(j);
 									JSONObject jo = new JSONObject();
@@ -144,25 +142,28 @@ public class MemoryUsageListener extends AbstractListener {
 													.getTime());
 									ja2.put(jo);
 
-									Double usedPercent = Double
-											.valueOf((String) jsonData1.get(0));
-									long timestamp = df.parse(
-											(String) jsonData1.get(1))
-											.getTime();
+									// Double usedPercent = Double
+									// .valueOf((String) jsonData1.get(0));
+									// long timestamp = df.parse(
+									// (String) jsonData1.get(1))
+									// .getTime();
+									//
+									// if (eqType.equals("主机")) {
+									// HostManager hm = HostManager
+									// .getInstance();
+									// hm.addMemoryDetecById(memid,
+									// usedPercent, timestamp);
+									// }
+									// if (eqType.equals("网络设备")) {
+									// NetEquipmentManager nem =
+									// NetEquipmentManager
+									// .getInstance();
+									// nem.addMemoryDetecById(memid,
+									// usedPercent, timestamp);
+									//
+									// }
 
-									if (eqType.equals("主机")) {
-										HostManager hm = HostManager
-												.getInstance();
-										hm.addMemoryDetecById(memid,
-												usedPercent, timestamp);
-									}
-									if (eqType.equals("网络设备")) {
-										NetEquipmentManager nem = NetEquipmentManager
-												.getInstance();
-										nem.addMemoryDetecById(memid,
-												usedPercent, timestamp);
-
-									}
+									System.out.println("memusage__" + ja2);
 
 								}
 								jsonData.remove("data");
@@ -184,7 +185,7 @@ public class MemoryUsageListener extends AbstractListener {
 						data.put("errorInfo", "未获取到相关kpi数据");
 					}
 
-					System.out.println("结果：" + data);
+					System.out.println("data：      " + data);
 					// 设置参数
 					params.addProperty(new ObjectProperty("data", data));
 				} catch (JSONException e) {

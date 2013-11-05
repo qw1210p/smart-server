@@ -21,14 +21,17 @@ import org.json.JSONObject;
 import smart.action.AbstractListener;
 import smart.api.API;
 import smart.api.RequestContentCapsule;
+import smart.api.host.HostConfig;
+import smart.api.host.HostConfigContext;
+import smart.api.host.MonitorSystemHostConfig;
 import smart.mast.action.Action;
 
 /**
  * 添加处理意见监听
  */
-public final class DealInfoListener extends AbstractListener {
+public final class AddAlarmOpInfoListener extends AbstractListener {
 
-	public DealInfoListener(Cellet cellet) {
+	public AddAlarmOpInfoListener(Cellet cellet) {
 		super(cellet);
 	}
 
@@ -43,26 +46,23 @@ public final class DealInfoListener extends AbstractListener {
 		// 获取请求参数
 		JSONObject json;
 		String token = null;
-		String dealType = null;
 		long almId = 0;
+		String moType = null;
 		String almCause = null;
 		long moId = 0;
-		String moType = null;
 		String dealInfo = null;
-		String dealUser = null;
-		long dealTime = 0;
+		long dealUserId = 0;
 
 		try {
 			json = new JSONObject(action.getParamAsString("data"));
 			token = json.getString("token");
-			dealType = json.getString("dealType");
 			almId = json.getLong("almId");
+			moType = json.getString("moType");
 			almCause = json.getString("almCause");
 			moId = json.getLong("moId");
-			moType = json.getString("moType");
 			dealInfo = json.getString("dealInfo");
-			dealUser = json.getString("dealUser");
-			dealTime = json.getLong("dealTime");
+			dealUserId = json.getLong("dealUserId");
+			
 		} catch (JSONException e1) {
 			e1.printStackTrace();
 		}
@@ -71,28 +71,33 @@ public final class DealInfoListener extends AbstractListener {
 		if (token != null && !"".equals(token)) {
 
 			// URL
-			StringBuilder url = new StringBuilder(API.DEALINFO);
-
+			HostConfig config = new MonitorSystemHostConfig();
+			HostConfigContext context = new HostConfigContext(config);
+			StringBuilder url = new StringBuilder(context.getAPIHost())
+					.append("/").append(API.ALARMOPINFO).append("/").append(almId).append(",")
+					.append(Long.valueOf(moType)).append(",").append(almCause).append(",")
+					.append(moId).append(",").append(dealInfo).append("?DMSN=101&userID=")
+					.append(dealUserId).append("&op=save");
+			System.out.println("请求的URL: "+url.toString());
+			
 			// 创建请求
 			Request request = this.getHttpClient().newRequest(url.toString());
-			request.method(HttpMethod.POST);
+			request.method(HttpMethod.GET);
 			url = null;
 
 			// 填写数据内容
 			DeferredContentProvider dcp = new DeferredContentProvider();
 			RequestContentCapsule capsule = new RequestContentCapsule();
 			capsule.append("almId", almId);
-			capsule.append("dealType", dealType);
 			capsule.append("almCause", almCause);
 			capsule.append("moId", moId);
 			capsule.append("moType", moType);
 			capsule.append("dealInfo", dealInfo);
-			capsule.append("dealUser", dealUser);
-			capsule.append("dealTime", dealTime);
+			capsule.append("dealUser", dealUserId);
 			capsule.append("token", token);
 			dcp.offer(capsule.toBuffer());
 			dcp.close();
-			request.content(dcp);
+//			request.content(dcp);
 
 			// 发送请求
 			ContentResponse response = null;
@@ -116,23 +121,23 @@ public final class DealInfoListener extends AbstractListener {
 					String content = new String(bytes, Charset.forName("UTF-8"));
 					try {
 						jo = new JSONObject(content);
-
+						System.out.println("返回："+jo);
 						// 设置参数
 						params.addProperty(new ObjectProperty("data", jo));
 
 						// 响应动作，即向客户端发送ActionDialect
 						// 参数tracker 是一次动作的追踪标识，这里可以使用访问标识token
-						this.response(token, Action.DEALINFO, params);
+						this.response(token, Action.ADDALARMOPINFO, params);
 
 					} catch (JSONException e) {
 						e.printStackTrace();
 					}
 				} else {
-					this.reportHTTPError(token, Action.DEALINFO);
+					this.reportHTTPError(token, Action.ADDALARMOPINFO);
 				}
 				break;
 			default:
-				Logger.w(DealInfoListener.class,
+				Logger.w(AddAlarmOpInfoListener.class,
 						"返回响应码：" + response.getStatus());
 				jo = new JSONObject();
 				try {
@@ -146,7 +151,7 @@ public final class DealInfoListener extends AbstractListener {
 
 				// 响应动作，即向客户端发送 ActionDialect
 				// 参数 tracker 是一次动作的追踪标识，这里可以使用处理类型。
-				this.response(token, Action.DEALINFO, params);
+				this.response(token, Action.ADDALARMOPINFO, params);
 				break;
 			}
 		} else {
@@ -157,7 +162,7 @@ public final class DealInfoListener extends AbstractListener {
 				e.printStackTrace();
 			}
 			params.addProperty(new ObjectProperty("data", jo));
-			this.response(Action.DEALINFO, params);
+			this.response(Action.ADDALARMOPINFO, params);
 		}
 	}
 }

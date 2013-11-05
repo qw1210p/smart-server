@@ -25,9 +25,7 @@ import smart.api.RequestContentCapsule;
 import smart.api.host.HostConfig;
 import smart.api.host.HostConfigContext;
 import smart.api.host.MonitorSystemHostConfig;
-import smart.core.AlarmManager;
 import smart.mast.action.Action;
-import smart.util.DButil;
 
 /**
  * 告警处理监听
@@ -52,13 +50,13 @@ public final class AlarmDealListener extends AbstractListener {
 		long almId = 0;
 		String opType = null;
 		String username = null;
-		long userId = 0;
+//		long userId = 0;
 		try {
 			json = new JSONObject(action.getParamAsString("data"));
 			System.out.println("操作参数："+json);
 			token = json.getString("token");
 			username = json.getString("username");
-			userId = json.getLong("userId");
+//			userId = json.getLong("userId");
 			almId = json.getLong("almId");
 			opType = json.getString("opType");
 		} catch (JSONException e1) {
@@ -79,11 +77,11 @@ public final class AlarmDealListener extends AbstractListener {
 			if ("almConfirm".equals(opType)) {
 				url = new StringBuilder(context.getAPIHost())
 				.append("/").append(API.ALARMDEAL).append("/confirm/").append(almId)
-				.append("?DMSN=998&userID=").append(almId).append("&userName=").append(username);
+				.append("?DMSN=101&userID=").append(almId).append("&userName=").append(username);
 			} else if ("almDel".equals(opType)) {
 				url = new StringBuilder(context.getAPIHost())
 				.append("/").append(API.ALARMDEAL).append("/clear/").append(almId)
-				.append("?DMSN=998&userID=").append(almId).append("&userName=").append(username);
+				.append("?DMSN=101&userID=").append(almId).append("&userName=").append(username);
 			}
 			request = this.getHttpClient().newRequest(url.toString());
 			request.method(HttpMethod.GET);
@@ -126,10 +124,10 @@ public final class AlarmDealListener extends AbstractListener {
 						jo = new JSONObject(content);
 
 						if ("成功".equals(jo.getString("result"))) {
-							if (DButil.getInstance().getConnection() != null) {
-								AlarmManager.getInstance().alarmDeal(almId,
-										opType, username, userId, opTime);
-							}
+//							if (DButil.getInstance().getConnection() != null) {
+//								AlarmManager.getInstance().alarmDeal(almId,
+//										opType, username, userId, opTime);
+//							}
 							jo.remove("result");
 							jo.put("status", 300);
 							jo.put("errorInfo", "");

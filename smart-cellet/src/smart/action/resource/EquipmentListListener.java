@@ -25,9 +25,7 @@ import smart.api.API;
 import smart.api.host.HostConfig;
 import smart.api.host.HostConfigContext;
 import smart.api.host.MonitorSystemHostConfig;
-import smart.core.EquipmentManager;
 import smart.mast.action.Action;
-import smart.util.DButil;
 
 /**
  * 设备列表监听
@@ -105,21 +103,23 @@ public class EquipmentListListener extends AbstractListener {
 						vendor.put("AIX", 21);
 						vendor.put("Solaris", 22);
 						vendor.put("凯创(5624)", 23);
+						vendor.put("汉柏", 24);
+						vendor.put("D-Link", 25);
 						vendor.put("未知", 0);
 
 						ja = data.getJSONArray("moList");
 						JSONArray jar = new JSONArray();
 						List<String> list = Arrays.asList("moId", "typePath",
-								"moIp", "moName", "alias", "typeCode",
+								"moIp", "moName", "alias", "moType",
 								"typeName", "vendor", "model", "mgrStatus",
 								"almStatus");
-						int m = 0;
-						if (ja.length() > 20) {
-							m = 20;
-						} else {
-							m = ja.length();
-						}
-						for (int i = 0; i < m; i++) {
+//						int m = 0;
+//						if (ja.length() > 20) {
+//							m = 20;
+//						} else {
+//							m = ja.length();
+//						}
+						for (int i = 0; i < ja.length(); i++) {
 							JSONObject jo = new JSONObject();
 							JSONObject job = new JSONObject();
 							for (int j = 0; j < ja.getJSONArray(i).length(); j++) {
@@ -139,21 +139,21 @@ public class EquipmentListListener extends AbstractListener {
 								}
 							}
 							jo.put("vendorID", vendor.getInt(job.get("vendor").toString()));
-							jo.put("typeCode", Long.valueOf(job.getString("typeCode").substring(0, 4)));
+							jo.put("typeCode", Long.valueOf(job.getString("moType").substring(0, 4)));
 							jo.put("moId", job.getLong("moId"));
-							jo.put("moType", job.getString("typePath").split(" > ")[0]);
+							jo.put("moSort", job.getString("typePath").split(" > ")[0]);
 							jo.put("typeName", job.getString("typePath").split(" > ")[1]);
 							job.remove("moId");
 //							job.remove("vendor");
 							job.remove("typeName");
 							jo.put("base_info", job);
 
-							if (DButil.getInstance().getConnection() != null) {
-								long id = jo.getLong("moId");
-								if (!EquipmentManager.getInstance().isExist(id)) {
-									EquipmentManager.getInstance().storeEquipment(jo);
-								}
-							}
+//							if (DButil.getInstance().getConnection() != null) {
+//								long id = jo.getLong("moId");
+//								if (!EquipmentManager.getInstance().isExist(id)) {
+//									EquipmentManager.getInstance().storeEquipment(jo);
+//								}
+//							}
 							jar.put(jo);
 						}
 						System.out.println("jsonArray" + jar.length()+": "+ jar);
